@@ -1,0 +1,36 @@
+<!doctype HTML>
+<html>
+    <head>
+        <style>
+            canvas{
+                border: 1px solid black;
+            }
+        </style>
+        <script src="jquery.js"></script>
+        <script>
+            var size = 20*4;
+            var factor = 45/8;
+            var ctx;
+
+            var dot = function(x, y){
+                ctx.arc(x*250+250, y*250+250, 2, 0, Math.PI*2, false);
+                ctx.fill();
+            }
+    
+            $(function(){
+                ctx = $('canvas')[0].getContext('2d');
+                for(var i=1; i<33; i++){
+                    var s = i/32;
+                    var a = Math.sqrt(s*512);
+                    var b = Math.sqrt(s);
+                    var x = Math.sin(a)*b;
+                    var y = Math.cos(a)*b;
+                    dot(x, y);
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <canvas width="500" height="500"></canvas>
+    </body>
+</html>

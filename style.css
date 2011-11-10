@@ -1,0 +1,81 @@
+html, body{
+    padding: 0;
+    margin: 0;
+    border: 0;
+    
+    font-family: sans-serif;
+    font-size: 10px;
+
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+canvas{
+    width: 100%;
+    height: 100%;
+}
+
+#controls{
+    position: fixed;
+    top: 10px;
+    left: 10px;
+}
+
+#share{
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+
+div.set{
+    float: left;
+    padding-right: 10px;
+}
+
+#instructions{
+    font-weight: bold;
+    color: white;
+    font-size: 13px;
+    position: fixed;
+    bottom: 10px;
+    left: 0px;
+    text-align: center;
+    text-shadow: black 0px 2px 5px;
+    width: 100%;
+}
+
+#error{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 500px;
+    height: 200px;
+    margin-left: -250px;
+    margin-top: -100px;
+    border: 1px solid black;
+    background-color: #eee;
+}
+
+h1{
+    text-align: center;
+    margin: 10px;
+    font-size: 16px;
+}
+
+pre{
+    font-size: 12px;
+    padding: 10px;
+    overflow: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
+#bugs{
+    padding: 10px;
+    font-size: 12px;
+}
+

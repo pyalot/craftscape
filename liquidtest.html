@@ -1,0 +1,173 @@
+<!doctype HTML>
+<html>
+    <head>
+        <style>
+            canvas{
+                border: 1px solid black;
+            }
+            table{
+                border-collapse: collapse;
+            }
+            tr:nth-child(even){
+                background-color: #ddd;
+            }
+            td{
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                padding-right: 5px;
+                padding-left: 5px;
+            }
+            td.sum{
+                font-weight: bold;
+            }
+        </style>
+        <script src="jquery.js"></script>
+        <script>
+            var size = 20*4;
+            var factor = 45/8;
+            var ctx;
+    
+            var clamp = function(value, left, right){
+                return value < left ? left : (value > right ? right : value);
+            };
+            
+            var copy = function(arr){
+                return arr.slice();
+            }
+            var add = function(arr1, arr2){
+                var result = [];
+                for(var i=0; i<size; i++){
+                    result[i] = arr1[i] + arr2[i];
+                }
+                return result;
+            }
+            var sub = function(arr1, arr2){
+                var result = [];
+                for(var i=0; i<size; i++){
+                    result[i] = arr1[i] - arr2[i];
+                }
+                return result;
+            }
+
+            var createArr = function(){
+                var result = [];
+                for(var i=0; i<size; i++){
+                    result.push(0);
+                }
+                return result;
+            }
+
+            var get = function(arr, pos){
+                return arr[clamp(pos, 0, size-1)];
+            }
+
+            var data1 = createArr();
+            var data2 = createArr();
+
+            var draw = function(arr){
+                ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+                ctx.beginPath();
+                var sum = 0.0;
+                for(var i=0; i<size; i++){
+                    var y = arr[i];
+                    sum += y;
+                    ctx.lineTo((i+1)*factor, ctx.canvas.height - (y+5)*factor);
+                }
+                ctx.stroke();
+                $('#sum').text(sum.toFixed(2));
+                if(log){
+                    var row = $('<tr></tr>')
+                        .appendTo('table');
+                    for(var i=0; i<size; i++){
+                        $('<td></td>').text(arr[i].toFixed(2)).appendTo(row);
+                    }
+                    $('<td></td>').text(sum.toFixed(2)).appendTo(row).addClass('sum');
+                }
+            }
+
+            var advect = function(current, last){
+                var result = copy(data1);
+                for(var i=0; i<size; i++){
+                    //result[i] = get(current, i) + (get(current, i-1) - get(last, i))/2.1 + (get(current, i+1) - get(last, i))/2.1;
+                    result[i] = get(current, i) + (
+                        get(current, i-1) + get(current, i+1) - get(last, i) * 2.0
+                    )/2.1;
+                    //result[i] = (current[i-1] + current[i+1]) - last[i];
+                }
+                return result;
+            }
+
+            var diffuse1 = function(data){
+                var result = copy(data);
+                for(var i=0; i<size; i++){
+                    result[i] = (get(data, i-1) + get(data, i) + get(data, i+1))/3.0;
+                }
+                return result;
+            }
+            var diffuse2 = function(data){
+                var result = copy(data);
+                for(var i=0; i<size; i++){
+                    var l = get(data, i-1);
+                    var c = get(data, i);
+                    var r = get(data, i+1);
+                    var diff1 = clamp((l-c)/2.0, -c/2, l/2);
+                    var diff2 = clamp((r-c)/2.0, -c/2, r/2);
+                    result[i] += diff1+diff2;
+                }
+                return result;
+            }
+
+            var momentum = function(last, current){
+                var result = createArr();
+                for(var i=0; i<size; i++){
+                    //result[i] = current[i]*2 - last[i];
+                    result[i] = current[i] + (current[i] - last[i])*0.93;
+                }
+                return result;
+            }
+
+            var simulate = function(){
+                //data1 = diffuse2(data1);
+                var tmp = advect(data1, data2);
+                data2 = data1;
+                data1 = tmp;
+            };
+
+            var count = 0;
+            var log = false;
+            var down = false;
+            $(function(){
+                ctx = $('canvas')[0].getContext('2d');
+                draw(data1);
+                var interval = setInterval(function(){
+                    count += 1;
+                    if(count > 20 && log){
+                        clearInterval(interval);
+                    }
+                    if(down){
+                        data1[9] += 6;
+                        data2[9] += 6;
+                        data1[10] += 10;
+                        data2[10] += 10;
+                        data1[11] += 6;
+                        data2[11] += 6;
+                    }
+                    simulate();
+                    draw(data1);
+                }, 1000/30);
+            });
+            $(document)
+                .mousedown(function(event){
+                    down = true;
+                })
+                .mouseup(function(event){
+                    down = false;
+                });
+        </script>
+    </head>
+    <body>
+        <div id="sum"></div>
+        <canvas width="500" height="250"></canvas>
+        <table></table>
+    </body>
+</html>

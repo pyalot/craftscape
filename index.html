@@ -1,0 +1,59 @@
+<!doctype HTML>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css"/>
+        <link rel="stylesheet" type="text/css" href="ui/css/overcast/jquery-ui-1.8.16.custom.css"/>
+        <script src="jquery.js"></script>
+        <script src="ui/js/jquery-ui-1.8.16.custom.min.js"></script>
+        <script src="jquery.scrollwheel.js"></script>
+
+        <script src="webgl/util.js"></script>
+        <script src="webgl/event.js"></script>
+        <script src="webgl/scheduler.js"></script>
+        <script src="webgl/framework.js"></script>
+        <script src="webgl/shader.js"></script>
+        <script src="webgl/sphere.js"></script>
+        <script src="webgl/box.js"></script>
+        <script src="webgl/grid.js"></script>
+        <script src="webgl/hexgrid.js"></script>
+        <script src="webgl/quad.js"></script>
+        <script src="webgl/vbo.js"></script>
+        <script src="webgl/texture.js"></script>
+        <script src="webgl/framebuffer.js"></script>
+        <script src="webgl/matrix.js"></script>
+        <script src="webgl/vector.js"></script>
+        <script src="webgl/quaternion.js"></script>
+        <script src="webgl/viewpoint.js"></script>
+        <script src="webgl/loader.js"></script>
+        <script src="webgl/projection.js"></script>
+        <script src="webgl/keys.js"></script>
+
+        <script type="text/javascript" src="main.js"></script>
+    </head>
+    <body>
+        <div id="controls">
+            <div id="modtype" class="set">
+                <input id="rock" type="radio" name="modtype" checked="checked"/><label for="rock">Rock</label>
+                <input id="soil" type="radio" name="modtype" /><label for="soil">Soil</label>
+                <input id="water" type="radio" name="modtype" /><label for="water">Water</label>
+            </div>
+            <div id="modop" class="set">
+                <input id="add" type="radio" name="modop" checked="checked"/><label for="add">Add</label>
+                <input id="sub" type="radio" name="modop" /><label for="sub">Remove</label>
+            </div>
+            <div id="params" class="set">
+                <input id="rain" type="checkbox" checked="checked"/><label for="rain">Rain</label>
+                <input id="evaporate" type="checkbox" checked="checked"/><label for="evaporate">Evaporate</label>
+                <input id="erode" type="checkbox" checked="checked"/><label for="erode">Erode</label>
+            </div>
+            <div id="instructions">
+                press&amp;drag mouse to look, SPACE=create/remove, scrollwheel=editsize, W=forward, S=backward, A=left, D=right, Q=down, E=up
+            </div>
+        </div>
+        <div id="share">
+            <span  class='st_reddit_hcount' displayText='Reddit'></span><span  class='st_twitter_hcount' displayText='Tweet'></span><span  class='st_stumbleupon_hcount' displayText='StumbleUpon'></span><span  class='st_plusone_hcount' ></span>
+            <script type="text/javascript">var switchTo5x=true;</script><script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script><script type="text/javascript">stLight.options({publisher:'5871d414-1403-44e1-84ad-d9788b4c19b2'});</script>
+        </div>
+        <canvas></canvas>
+    </body>
+</html>
