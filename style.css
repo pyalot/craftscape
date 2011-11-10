@@ -28,6 +28,18 @@ canvas{
     right: 10px;
 }
 
+#share a{
+    color: #cdff48;
+    font-weight: bold;
+    font-size: 14px;
+    text-decoration: none;
+    text-shadow: black 0px 2px 7px;
+}
+
+#share a:hover{
+    color: #ffca57;
+}
+
 div.set{
     float: left;
     padding-right: 10px;
