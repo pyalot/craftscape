@@ -261,6 +261,8 @@ $(function(){
     });
 
     var handle_error = function(description){
+        $(document).unbind();
+        $('body').empty();
         var elem = $('<div id="error"></div>')
             .appendTo('body');
         $('<h1>Whoops, shit happens.</h1>')

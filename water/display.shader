@@ -144,19 +144,19 @@ fragment:
         vec3 bitangent = normalize(cross(tangent, base_normal));
         mat3 orthobasis = mat3(tangent, base_normal, bitangent);
         vec3 detail_normal = orthobasis * getnormal();
-        vec3 normal = normalize(mix(base_normal*0.95+detail_normal*0.05, detail_normal, speed_factor*2.0));
+        vec3 normal = normalize(mix(base_normal*0.5+detail_normal*0.5, detail_normal, speed_factor));
         normal = normalize(mix(normal, base_normal, sqrt(clamp(w.x/0.0075, 0.0, 1.0))*0.75));
 
         vec3 lightdir = (lightview * vec4(0.0, 0.0, 1.0, 1.0)).xyz;
         vec3 eye_normal = get_world_normal(gl_FragCoord.xy);
-        vec3 specular_normal = reflect(eye_normal, normalize(normal * vec3(1.0, 0.2, 1.0)));
+        vec3 specular_normal = reflect(eye_normal, normalize(normal * vec3(1.0, 0.35, 1.0)));
         float lambert = pow(max(0.0, dot(specular_normal, lightdir)), 0.5);
-        float specular = pow(lambert, 20.0)*0.75;
+        float specular = pow(lambert, 20.0)*0.9;
         vec3 deep = vec3(0.0, 51.0/255.0, 128.0/255.0)*0.5;
         vec3 turbulent = vec3(42.0/255.0, 212.0/255.0, 255.0/255.0)*0.9;
 
         vec3 color = mix(turbulent, deep, sqrt(clamp(w.x/0.0075, 0.0, 1.0)));
-        color = mix(color, vec3(1.0, 1.0, 1.0), clamp(speed_factor, 0.0, 1.0));
+        color = mix(color, vec3(1.0, 1.0, 1.0), clamp(pow(speed_factor*2.0, 3.0), 0.0, 1.0));
 
         vec3 exident = color * mix(shLight(specular_normal, beach), shLight(normal, beach), 0.75);
 
