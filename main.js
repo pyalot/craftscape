@@ -297,22 +297,27 @@ $(function(){
 
     var gl = framework.gl;
 
-    var grid = new framework.Grid({
-        xsize: 512,
-        ysize: 512,
-        cell_width: 4,
-        cell_height: 4,
-        width: 1,
-        height: 1,
-    });
+    var gridsize = 512;
+    var grid, hexgrid;
+    var createGrids = function(gridsize) {
+        grid = new framework.Grid({
+            xsize: gridsize,
+            ysize: gridsize,
+            cell_width: 4,
+            cell_height: 4,
+            width: 1,
+            height: 1,
+        });
     
-    var hexgrid = new framework.HexGrid({
-        xsize: 512,
-        ysize: 512,
-        width: 1,
-        height: 1,
-    });
-
+        hexgrid = new framework.HexGrid({
+            xsize: gridsize,
+            ysize: gridsize,
+            width: 1,
+            height: 1,
+        });
+    };
+    createGrids(gridsize);
+    
     var scheduler = new Scheduler(function(delta, now){ 
         terrain.update();
         framework.screen.bind();
@@ -334,6 +339,13 @@ $(function(){
             .set('mousepos', mousepos)
             .set('editsize', editsize)
             .draw(grid, framework.screen);
+            
+        var error = gl.getError();
+        if (error == 1285) {    // out of memory
+            gridsize /= 4;      // reduce grid size
+            console.log("Reducing gridsize to " + gridsize);
+            createGrids(gridsize);
+        }
     });
 
     var programs = {
