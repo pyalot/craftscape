@@ -283,6 +283,12 @@ $(function(){
         return;
     }
     
+    try {   // some browsers need this extension
+        framework.getExt('texture_float_linear')
+    } catch (error){
+        // ignore error in browsers that do not have this extension
+    }
+    
     projection = new framework.Perspective(framework.screen, {
         near: 0.01,
         far: 20,
