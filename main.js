@@ -18,6 +18,7 @@ var controls = {
 };
 var view, mousepos, projection;
 var start = Date.now()/1000;
+var terrain;
 
 var Processor = Class({
     __init__: function(width, height, framework){
@@ -170,7 +171,12 @@ var Terrain = Class({
             'heights': this.heights.result,
             'normals': this.normals.result,
         });
-        this.delta = 223.0;
+        this.reset($( "#seedslider" ).slider( "value" ));
+ 		$( "#seed" ).val( $( "#seedslider" ).slider( "value" ) );
+    },
+    reset: function(delta) {
+    	this.delta = delta;
+//        console.log(this.delta);
         this.programs.simplex.set('delta', this.delta);
         this.heights.run(this.programs.simplex);
         this.programs.errode.set({
@@ -241,8 +247,31 @@ $(function(){
         }
     });
 
+    $( ".ui-icon-wrench" ).click(function() {
+        $(".hideable").toggle();
+	});
+
+    $('#seed').change(function(){
+    	var newseed = parseInt($( "#seed" ).val());
+  		$( "#seedslider" ).slider( 'value', newseed );
+      terrain.reset(newseed);       
+    });
+
+	$( "#seedslider" ).slider(	{
+		slide: function( event, ui ) {
+			$( "#seed" ).val( ui.value );
+			terrain.reset(ui.value);
+		},
+        value:1,
+        min: 1,
+        max: 1000,
+        step: 1
+    });
+    
+   	$(".hideable").toggle();
+   	
     view = new Viewpoint({
-        element: document,
+        element: canvas,
         offset: new Vec3(0, 0, 0.0),
         x: -0.08,
         y: -0.08,
@@ -375,9 +404,7 @@ $(function(){
 
         copy: 'copy.shader',
     };
-
-    var terrain;
-    
+   
     var loader = new framework.Loader()
         .error(function(description){
             handle_error(description);

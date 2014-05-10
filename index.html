@@ -3,10 +3,12 @@
     <head>
         <link rel="stylesheet" type="text/css" href="style.css"/>
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/overcast/jquery-ui.css" />
+		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         <script src="jquery.mousewheel.min.js"></script>
 
+<!--script src="https://www.khronos.org/registry/webgl/sdk/debug/webgl-debug.js"></script-->
         <script src="webgl/util.js"></script>
         <script src="webgl/event.js"></script>
         <script src="webgl/scheduler.js"></script>
@@ -46,7 +48,19 @@
                 <input id="evaporate" type="checkbox" checked="checked"/><label for="evaporate">Evaporate</label>
                 <input id="erode" type="checkbox" checked="checked"/><label for="erode">Erode</label>
             </div>
-            <div id="instructions">
+            <div id="toolstoggle" class="set">
+                <span class="ui-icon ui-icon-wrench"></span>
+            </div>
+            <div id="morecontrols" class="set hideable">
+                <div class="set">
+                    <label id="seedlabel" for="seed">Simplex<br/>Seed</label>
+                	<input type="text" id="seed" />
+			    </div>
+			    <div class="slider">
+			    	<div id="seedslider" ></div>
+			    </div>
+			</div>
+			<div id="instructions">
                 press&amp;drag mouse to look, SPACE=create/remove, scrollwheel=editsize, W=forward, S=backward, A=left, D=right, Q=down, E=up
             </div>
         </div>

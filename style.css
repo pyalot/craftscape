@@ -12,20 +12,25 @@ html, body{
 }
 
 canvas{
+    position:absolute;
+    top: 35px;
     width: 100%;
     height: 100%;
 }
 
 #controls{
     position: fixed;
-    top: 10px;
+    top: 5px;
     left: 10px;
+	background-color: white;
+	z-index: 2;
 }
 
 #share{
     position: fixed;
-    top: 10px;
-    right: 10px;
+    top: 7px;
+    right: 5px;
+    z-index: 1;
 }
 
 #share a{
@@ -45,12 +50,41 @@ div.set{
     padding-right: 10px;
 }
 
+#toolstoggle{
+    padding-top: 4px;
+}
+
+#seed{
+    float:left;
+    color: black;
+    font-size: 12px;
+    width: 36px;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-top: 1px;
+}
+
+label[for="seed"]{
+	float:left;
+    font-weight:normal;
+    font-size: 10px;
+    padding-top: 2px;
+    padding-right:5px;
+}
+
+div.slider{
+ 	float:left;
+    width: 200px;
+    padding-top: 6px;
+    padding-left: 2px;
+}
+
 #instructions{
     font-weight: bold;
     color: white;
     font-size: 13px;
     position: fixed;
-    bottom: 10px;
+    bottom: 5px;
     left: 0px;
     text-align: center;
     text-shadow: black 0px 2px 5px;
