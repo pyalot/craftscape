@@ -18,6 +18,7 @@ var controls = {
 };
 var view, mousepos, projection;
 var start = Date.now()/1000;
+var terrain;
 
 var Processor = Class({
     __init__: function(width, height, framework){
@@ -170,7 +171,12 @@ var Terrain = Class({
             'heights': this.heights.result,
             'normals': this.normals.result,
         });
-        this.delta = 223.0;
+        this.reset($( "#seedslider" ).slider( "value" ));
+ 		$( "#seed" ).val( $( "#seedslider" ).slider( "value" ) );
+    },
+    reset: function(delta) {
+    	this.delta = delta;
+//        console.log(this.delta);
         this.programs.simplex.set('delta', this.delta);
         this.heights.run(this.programs.simplex);
         this.programs.errode.set({
@@ -241,8 +247,31 @@ $(function(){
         }
     });
 
+    $( ".ui-icon-wrench" ).click(function() {
+        $(".hideable").toggle();
+	});
+
+    $('#seed').change(function(){
+    	var newseed = parseInt($( "#seed" ).val());
+  		$( "#seedslider" ).slider( 'value', newseed );
+      terrain.reset(newseed);       
+    });
+
+	$( "#seedslider" ).slider(	{
+		slide: function( event, ui ) {
+			$( "#seed" ).val( ui.value );
+			terrain.reset(ui.value);
+		},
+        value:1,
+        min: 1,
+        max: 1000,
+        step: 1
+    });
+    
+   	$(".hideable").toggle();
+   	
     view = new Viewpoint({
-        element: document,
+        element: canvas,
         offset: new Vec3(0, 0, 0.0),
         x: -0.08,
         y: -0.08,
@@ -297,22 +326,27 @@ $(function(){
 
     var gl = framework.gl;
 
-    var grid = new framework.Grid({
-        xsize: 512,
-        ysize: 512,
-        cell_width: 4,
-        cell_height: 4,
-        width: 1,
-        height: 1,
-    });
+    var gridsize = 512;
+    var grid, hexgrid;
+    var createGrids = function(gridsize) {
+        grid = new framework.Grid({
+            xsize: gridsize,
+            ysize: gridsize,
+            cell_width: 4,
+            cell_height: 4,
+            width: 1,
+            height: 1,
+        });
     
-    var hexgrid = new framework.HexGrid({
-        xsize: 512,
-        ysize: 512,
-        width: 1,
-        height: 1,
-    });
-
+        hexgrid = new framework.HexGrid({
+            xsize: gridsize,
+            ysize: gridsize,
+            width: 1,
+            height: 1,
+        });
+    };
+    createGrids(gridsize);
+    
     var scheduler = new Scheduler(function(delta, now){ 
         terrain.update();
         framework.screen.bind();
@@ -334,6 +368,13 @@ $(function(){
             .set('mousepos', mousepos)
             .set('editsize', editsize)
             .draw(grid, framework.screen);
+            
+        var error = gl.getError();
+        if (error == 1285) {    // out of memory
+            gridsize /= 4;      // reduce grid size
+            console.log("Reducing gridsize to " + gridsize);
+            createGrids(gridsize);
+        }
     });
 
     var programs = {
@@ -363,9 +404,7 @@ $(function(){
 
         copy: 'copy.shader',
     };
-
-    var terrain;
-    
+   
     var loader = new framework.Loader()
         .error(function(description){
             handle_error(description);
